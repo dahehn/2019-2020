@@ -100,7 +100,7 @@ class LocationController extends Controller
             ]);
             $location->name = $request->name;
             $location->save();
-            return view('locations.index');
+            return view('locations.edit')->with('location', $location);
         }
         catch (Exception $ex)
         {

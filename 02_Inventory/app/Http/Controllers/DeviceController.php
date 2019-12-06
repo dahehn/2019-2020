@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Device;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\App;
 use phpDocumentor\Reflection\Location;
 
 
@@ -108,9 +109,11 @@ class DeviceController extends Controller
                 $device->vendor=$request->vendor;
             if(!$request->year==null)
                 $device->year=$request->year;
-            $device->borrowed=$request->borrowed;
-            $location=Location::find($request->location);
-            $device->location()->assocaite($location);
+            if($request->borrowed==true)
+                $device->borrowed=true;
+            else
+                $device->borrowed=false;
+            $device->location_id=$request->location_id;
             $device->save();
             return view('locations.index');
         }
@@ -128,6 +131,13 @@ class DeviceController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $device = Device::find($id);
+        if ($device != null) {
+            Device::destroy($id);
+            return redirect()->route('locations.index');
+        }
+        else {
+            return view('locations.index') ->withErrors('Unable to delete this device, device not found');
+        }
     }
 }

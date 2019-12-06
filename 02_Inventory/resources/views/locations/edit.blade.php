@@ -2,10 +2,13 @@
 @section('content')
     <body>
     <h2>Location Details</h2>
-    @csrf
+
     <form method="post" action="{{route('location.update',$location->id)}}">
         @method('patch')
-    <p>Location name:  <input type="text" placeholder="{{$location->name}}" name="name"></p>
+        @csrf
+    <p>Location name:
+        <input type="text" placeholder="{{$location->name}}" name="name">
+    </p>
         <button type="submit" class="btn btn-success">
             Change Name
         </button>
@@ -36,6 +39,13 @@
                 <td>
                     <a class="btn btn-link" href="{{ route('devices.edit',  $d->id) }}">
                         Details
+                    <form method="post" action="{{ route('device.destroy', $d->id) }}">
+                        {{ method_field("delete") }}
+                        {{ csrf_field() }}
+                        <button class="btn btn-link">
+                            Delete
+                        </button>
+                    </form>
                     </a>
                 </td>
             </tr>

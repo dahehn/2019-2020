@@ -19,7 +19,7 @@ Route::get('locations/index', 'LocationController@index')->name('locations.index
 Route::get('devices/create', 'DeviceController@create')->name('device.create');
 Route::post('devices', 'DeviceController@store')->name('device.store');
 Route::patch('devices/update/{device}','DeviceController@update')->name('device.update');
-
+Route::delete('devices/delete/{device}','DeviceController@destroy')->name('device.destroy');
 //delete location
 Route::delete('locations/delete/{location}','LocationController@destroy')->name('locations.destroy');
 Route::post('locations', 'LocationController@store')->name('location.store');

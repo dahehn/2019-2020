@@ -4,6 +4,7 @@
     <body>
     <form method="post" action="{{route('device.update',$device->id)}}" >
         @method('patch')
+        @csrf
         <p>Model: <input type="text" placeholder="{{$device->model}}" name="model"></p>
         <p>Vendor: <input type="text" placeholder="{{$device->vendor}}" name="vendor"></p>
         @if($device->borrowed===true)
@@ -45,6 +46,13 @@
 
         <button type="submit">
             Change
+        </button>
+    </form>
+    <form method="post" action="{{ route('device.destroy', $device->id) }}">
+        {{ method_field("delete") }}
+        {{ csrf_field() }}
+        <button class="btn btn-link">
+            Delete
         </button>
     </form>
     </body>
