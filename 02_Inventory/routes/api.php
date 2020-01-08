@@ -13,6 +13,12 @@ use Illuminate\Http\Request;
 |
 */
 
+Route::get('devices/edit/{device}','DeviceController@edit')->name('devices.edit');
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
+
+Route::apiResource('/locations', API\LocationController::class);
+Route::apiResource('/devices', API\DeviceController::class);
+
+
