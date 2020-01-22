@@ -119,7 +119,7 @@ class LocationController extends Controller
     {
         $location = Location::find($id);
 
-        // cheap way: don't delete any subject with attached teachers
+
         if ($location != null && count($location->devices) == 0) {
             Location::destroy($id);
             return redirect()->route('locations.index');

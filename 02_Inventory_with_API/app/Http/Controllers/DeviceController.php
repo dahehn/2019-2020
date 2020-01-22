@@ -23,7 +23,7 @@ class DeviceController extends Controller
      */
     public function create()
     {
-        //
+        return view('devices.create');
     }
 
     /**
@@ -34,7 +34,27 @@ class DeviceController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        try {
+            $device = new Device();
+            $device->id = $request->id;
+            $this->validate($request,[
+                'vendor' => 'required',
+                'model' => 'required',
+                'year'=>'required',
+            ]);
+            $device->vendor = $request->vendor;
+            $device->model = $request->model;
+            $device->year = $request->year;
+            $device->borrowed = false;
+            $location=\App\Location::find($request->get('location'));
+            $device->location()->associate($location);
+            $device->save();
+            return redirect()->route('locations.index');
+        }
+        catch (Exception $ex)
+        {
+            return redirect()->route('location.create')->withErrors("Cannot create because of error: " . $ex. "!");
+        }
     }
 
     /**
@@ -56,7 +76,15 @@ class DeviceController extends Controller
      */
     public function edit($id)
     {
-        //
+        $device = Device::find($id);
+
+        if ($device != null) {
+            return view('devices.edit')->with('device', $device);
+        }
+        else {
+            return redirect()->route('locations.edit')
+                ->withErrors('Device with id=' . $id . ' not found!');
+        }
     }
 
     /**
@@ -68,7 +96,27 @@ class DeviceController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        try
+        {
+            $device = Device::find($id);
+            if(!$request->model==null)
+                $device->model = $request->model;
+            if(!$request->vedor==null)
+                $device->vendor=$request->vendor;
+            if(!$request->year==null)
+                $device->year=$request->year;
+            if($request->borrowed==true)
+                $device->borrowed=true;
+            else
+                $device->borrowed=false;
+            $device->location_id=$request->location_id;
+            $device->save();
+            return view('locations.index');
+        }
+        catch (Exception $ex)
+        {
+            return redirect()->route('location.edit')->withErrors("Cannot edit because of error: " . $ex. "!");
+        }
     }
 
     /**
@@ -79,6 +127,13 @@ class DeviceController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $device = Device::find($id);
+        if ($device != null) {
+            Device::destroy($id);
+            return redirect()->route('locations.index');
+        }
+        else {
+            return view('locations.index') ->withErrors('Unable to delete this device, device not found');
+        }
     }
 }

@@ -13,7 +13,7 @@ class LocationController extends Controller
      */
     public function index()
     {
-        //
+        return view('locations.index');
     }
 
     /**
@@ -23,7 +23,7 @@ class LocationController extends Controller
      */
     public function create()
     {
-        //
+        return view('locations.create');
     }
 
     /**
@@ -34,7 +34,20 @@ class LocationController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        try {
+            $location = new Location();
+            $location->id = $request->id;
+            $this->validate($request,[
+                'name' => 'required',
+            ]);
+            $location->name = $request->name;
+            $location->save();
+            return redirect()->route('locations.index');
+        }
+        catch (Exception $ex)
+        {
+            return redirect()->route('location.create')->withErrors("Cannot create because of error: " . $ex. "!");
+        }
     }
 
     /**
@@ -56,7 +69,15 @@ class LocationController extends Controller
      */
     public function edit($id)
     {
-        //
+        $location = Location::find($id);
+
+        if ($location != null) {
+            return view('locations.edit')->with('location', $location);
+        }
+        else {
+            return redirect()->route('locations.index')
+                ->withErrors('Location with id=' . $id . ' not found!');
+        }
     }
 
     /**
@@ -68,7 +89,20 @@ class LocationController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        try
+        {
+            $location = Location::find($id);
+            $this->validate($request,[
+                'name' => 'required',
+            ]);
+            $location->name = $request->name;
+            $location->save();
+            return view('locations.edit')->with('location', $location);
+        }
+        catch (Exception $ex)
+        {
+            return redirect()->route('location.edit')->withErrors("Cannot edit because of error: " . $ex. "!");
+        }
     }
 
     /**
@@ -79,6 +113,15 @@ class LocationController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $location = Location::find($id);
+
+
+        if ($location != null && count($location->devices) == 0) {
+            Location::destroy($id);
+            return redirect()->route('locations.index');
+        }
+        else {
+            return view('locations.edit')->with('location',$location) ->withErrors('Unable to delete Location is not empty');
+        }
     }
 }
