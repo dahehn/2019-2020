@@ -15,9 +15,9 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('login', function () {
-    return redirect()->route('login');
-});
+Auth::routes();
+
+Route::get('/home', 'HomeController@index')->name('home');
 
 Route::get('devices/edit/{device}','DeviceController@edit')->name('devices.edit');
 Route::get('locations/index', 'LocationController@index')->name('locations.index');
