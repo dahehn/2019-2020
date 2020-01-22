@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use App\User;
-use http\Env\Request;
+use Illuminate\Http\Request;
 use Illuminate\Foundation\Auth\RegistersUsers;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
@@ -71,7 +71,7 @@ class RegisterController extends Controller
         ]);
     }
 
-    public function APIregiser(Request $request){
+    public function APIRegister(Request $request){
 
         $this->validator($request->all())->validate();
 

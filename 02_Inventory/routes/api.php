@@ -16,9 +16,9 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::post('register', 'Auth\RegisterController@APIregister');
-Route::post('login', 'Auth\LoginController@APIlogin');
-Route::post('logout', 'Auth\LoginController@APIlogout');
+Route::post('/register', 'Auth\RegisterController@APIRegister');
+Route::post('/login', 'Auth\LoginController@APIlogin');
+Route::post('/logout', 'Auth\LoginController@APIlogout');
 
 Route::group(['middleware' => 'auth:api'], function() {
     Route::apiResource('/locations', API\LocationController::class);

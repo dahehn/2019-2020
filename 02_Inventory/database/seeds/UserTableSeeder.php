@@ -16,7 +16,7 @@ class UserTableSeeder extends Seeder
         $admin = User::create(
             [
                 'name' => 'Admin',
-                'email' => 'email.whatthehack@gmail.com',
+                'email' => 'admin@mail.com',
                 'password' => Hash::make('admin'),
                 'email_verified_at' => now()->timestamp,
                 'APIToken' => Str::random(16),
