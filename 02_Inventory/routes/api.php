@@ -16,6 +16,10 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 
+Route::post('register', 'Auth\RegisterController@APIregister');
+Route::post('login', 'Auth\LoginController@APIlogin');
+Route::post('logout', 'Auth\LoginController@APIlogout');
+
 Route::group(['middleware' => 'auth:api'], function() {
     Route::apiResource('/locations', API\LocationController::class);
     Route::apiResource('/devices', API\DeviceController::class);

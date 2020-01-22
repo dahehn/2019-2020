@@ -18,6 +18,7 @@ Route::get('/', function () {
 Route::get('login', function () {
     return redirect()->route('login');
 });
+Auth::routes();
 
 Route::get('devices/edit/{device}','DeviceController@edit')->name('devices.edit');
 Route::get('locations/index', 'LocationController@index')->name('locations.index');
